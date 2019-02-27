@@ -1,0 +1,64 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "com.clevertap.cordova.CleverTapPlugin": {
+      "CLEVERTAP_ACCOUNT_ID": "W69-8RZ-K94Z",
+      "CLEVERTAP_TOKEN": "12b-c60",
+      "CLEVERTAP_REGION": " ",
+      "PACKAGE_NAME": "com.chapinometro.app"
+    },
+    "cordova-plugin-console": {
+      "PACKAGE_NAME": "com.chapinometro.app"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.chapinometro.app"
+    },
+    "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "com.chapinometro.app"
+    },
+    "cordova-plugin-facebook4": {
+      "APP_ID": "1915593285386091",
+      "APP_NAME": "Chapinometro",
+      "PACKAGE_NAME": "com.chapinometro.app"
+    },
+    "cordova-plugin-local-notification": {
+      "PACKAGE_NAME": "com.chapinometro.app"
+    },
+    "cordova-plugin-media": {
+      "PACKAGE_NAME": "com.chapinometro.app"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "com.chapinometro.app"
+    },
+    "cordova-plugin-vibration": {
+      "PACKAGE_NAME": "com.chapinometro.app"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.chapinometro.app"
+    },
+    "cordova-plugin-x-socialsharing": {
+      "PACKAGE_NAME": "com.chapinometro.app"
+    },
+    "cordova-android-support-gradle-release": {
+      "ANDROID_SUPPORT_VERSION": "27.+",
+      "PACKAGE_NAME": "com.chapinometro.app"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-app-event": {
+      "PACKAGE_NAME": "com.chapinometro.app"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.chapinometro.app"
+    },
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "com.chapinometro.app"
+    }
+  }
+}

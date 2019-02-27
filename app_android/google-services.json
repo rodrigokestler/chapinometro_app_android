@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "920263520101",
+    "firebase_url": "https://chapinometro-e8dd4.firebaseio.com",
+    "project_id": "chapinometro-e8dd4",
+    "storage_bucket": "chapinometro-e8dd4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920263520101:android:01f425158b2d57ec",
+        "android_client_info": {
+          "package_name": "com.chapinometro.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "920263520101-tqkevu3g0g0os03kh3q6s8kord57ol6r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBShjocb1HrCO8kCCQfzB5C0HBbtsL7tZk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

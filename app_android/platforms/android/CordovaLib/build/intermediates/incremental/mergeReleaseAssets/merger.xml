@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/Users/rodrigokestler/Documents/Clientes/Dnunchi/chapinometro/app_android/platforms/android/CordovaLib/assets"/><source path="/Users/rodrigokestler/Documents/Clientes/Dnunchi/chapinometro/app_android/platforms/android/CordovaLib/build/generated/assets/shaders/release"/></dataSet><dataSet config="release"><source path="/Users/rodrigokestler/Documents/Clientes/Dnunchi/chapinometro/app_android/platforms/android/CordovaLib/src/release/assets"/></dataSet></merger>

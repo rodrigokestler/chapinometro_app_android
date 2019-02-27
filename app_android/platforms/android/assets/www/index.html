@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+        
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="stylesheet" type="text/css" href="css/static.css">
+        
+        <link rel="stylesheet" type="text/css" href="css/slick.css">
+        <link rel="stylesheet" type="text/css" href="css/slick-theme.css">
+        
+        <title>Chapinometro</title>
+    </head>
+    <body>
+        <div id="cortina" class="cortina" style="display:none;">
+            <div id="cortina_container" style="width:30px;height:30px;margin:85% auto;">
+                
+            </div>
+        </div>
+        
+        <screen id="login_screen" style="z-index:25;" class="screen bg-azul" style=";">
+            <div class="container" style='margin:0 auto!important;overflow-y:auto;'>
+                <div class="container-flex" style="padding-bottom:0!important;overflow-y;auto;width:75%;margin:auto 12.5%;">
+                <div >
+                    <div id='login-logo'>
+                    </div>
+                </div>
+                <div >
+                    <button id="fb_login_button" onclick="fb.login();" class="btn btn-lg btn-primary btn-block bg-azulo2">Conectar con 
+                        <div id="icono-facebook" style=""></div>
+                        </button>
+                    <form class="form-signin login-form" id="loginForm">
+                        
+                        <div class="input-group" style="margin:10px 0!important;">
+                            <span class="input-group-addon" style="background-color:white;"><i class="fa fa-user" aria-hidden="true"></i></span>
+                            <input style="margin:0!important;padding:0!important;border-left:none;" type="email" id="loginEmail" name="user_email" class="inputpz form-control " placeholder="Correo electr&oacute;nico" required autofocus="">
+                        </div>
+                        <div class="input-group" style="margin:10px 0!important;">
+                            <span class="input-group-addon" style="background-color:white;"><i class="fa fa-key" aria-hidden="true"></i></span>
+                            <input style="margin:0!important;padding:0!important;border-left:none;" type="password" id="loginPassword" name="user_pass" class="inputpz form-control " placeholder="Contrase&ntilde;a" required>
+                        </div>
+                        <button id="loginButton" class="btn btn-lg btn-primary btn-block bg-azul2" type="submit">ENTRAR</button>
+                        
+                    </form>
+                        <label class="checkbox-inline"  style="display:none;float:right;"><input type="checkbox" id="rememberPassword" name="rememberPassword" value="remember" checked>Recordar contrase&ntilde;a</label>
+                    
+                </div>
+                <div >
+                    <button onclick="registerScreen.registerPantalla.show('slide',{direction:'right'},'fast');"class="btn btn-link font-blanco" style="display:block;margin:20px auto;width:100px;padding:0!important;font-weight:bold;">Registrarse</button>
+                    <!--
+                    <button class="btn btn-link font-blanco" style="padding:0!important;float:right;text-decoration: underline;">Olvid&eacute; mi contrase&ntilde;a</button>-->
+                </div>
+                <div style="display:none;">
+                    <div class="font-blanco" style="margin: 20px auto 0;width:200px;">
+                    <a>Pol&iacute;ticas de Uso y Privacidad</a>
+                    </div>
+                </div>
+            </div>
+            </div>
+            
+        </screen>
+        <screen id="register_screen" style="display:none;z-index:26;" class="screen bg-azul">
+            <div class="guipil-arriba">
+                
+                <div class='text-header'>CREAR CUENTA</div>
+                <button onclick="registerScreen.registerPantalla.hide('slide',{direction:'right'},'fast');" class='cerrar'>X</button>
+                   
+            </div>
+            <div class="container">
+                <div class="container-flex">
+                <div class="row font-blanco" style="margin-top:20px;">
+                    <p style="text-align:center;">Ingresa tu informaci&oacute;n para crear tu cuenta</p>
+                </div>
+                <form class="form-register" id="registerForm">
+                        
+                        
+                        <input type="email" id="registerEmail" name="user_email" class="inputpz form-control " placeholder="Correo electr&oacute;nico" required>
+                        
+                        <input type="password" id="registerPass1" name="user_pass1" class="inputpz form-control " placeholder="Contrase&ntilde;a" required>
+                        <input type="password" id="registerPass2" name="user_pass2" class="inputpz form-control " placeholder="Confirma tu contrase&ntilde;a" required>
+                        <input type="text" id="registerName" name="user_name" class="inputpz form-control " placeholder="Nombre p&uacute;blico" required>
+                        
+                        <button id="registerButton" class="btn btn-lg btn-primary btn-block bg-azul2" type="submit">ENTRAR</button>
+                        
+                    </form>
+                
+                
+                 </div>
+            </div>
+            
+        </screen>
+
+        <screen class="screen" id="menu_principal" style="z-index:21;background-color:transparent;display:none;">
+            <div id="menuLeft">
+                <div id='menu-logo'>
+                </div>
+                <table style="text-align:center;width:80%;margin:0 auto;">
+                    <tr>
+                    	<!--  
+                        <td >
+                            <button id="musica"></button>
+                        </td>
+                        -->
+                        <td colspan="2">
+                            <button id="sonidos" onclick="app.toggleSound();"></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button onclick="$('#instruccionesScreen').show();menuScreen.menu.hide();" id="instrucciones"></button>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="2" style="padding:25px 0;">
+                            <a onclick="$('#terminosCondicionesScreen').show();menuScreen.menu.hide();return false;">Términos y condiciones</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <a onclick="user.logout();return false;">Cerrar sesión</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div onclick="menuScreen.menu.hide();" id="close_menu" style="height:100%;width:20%;display:inline-block;float:left;background-color:transparent;">
+            </div>
+            <div id="franjaverdeclaro" class="bg-verdeclaro">
+            </div>
+            <div id="franjaverdeoscuro" class="bg-verdeoscuro">
+            </div>
+        </screen>
+        
+        <screen class="screen" id="niveles">
+            <div class="guipil-arriba">
+                <div id="vidas_niveles">
+                    <div id="texto_vidas_niveles" class="texto_vidas"></div>
+                </div>
+            </div>
+            <div class="container" style="padding-bottom:100px!important;">
+            	<div id="container-timer" style="display:none">
+            		<div class="timer">Por CHAMBON esperate</div>
+            		<div id="tiempo_restante" class="timer"></div>
+            	</div>
+            	<!--  
+            	<button onclick="niveles.getNiveles();">Refrescar</button>
+            	-->
+            	<div class="chapipromos"></div>
+            	<div id="nivelesDestacados" style="">
+            	
+            	<div class="container-flex" id="nivelesDestacadosWrapper"></div>
+            	</div>
+            	
+            	<div class="flecha-arriba"></div>
+                <div class="flecha-abajo"></div>
+                <div class="chapiniveles"></div>
+                <div class="container-flex" id="nivelesWrapper" style="padding-bottom:20px;overflow:scroll">
+                    
+                </div>
+            </div>
+            <div>
+            <button id="menuBtn" onclick="menuScreen.menu.show();"></button>
+            <div class="guipil-abajo">
+            </div>
+            <div class="quetzal-completo"></div>
+            </div>
+            
+        </screen>
+
+       <screen class="screen nivel2" id="juego" style="display:none">
+            <div class="guipil-arriba">
+                    <div id="tiempo_juego">
+	                    <div style="width: 50px;position: absolute;top: 5px;left: 0;">Tiempo</div>
+	                    <div id="segundos" style="width: 50px;position: absolute; top: 30px;left:9px;text-align:center">120</div>
+                    </div>
+                    <div id="vidas_niveles2">
+                    <div id="texto_vidas_niveles2" class="texto_vidas"></div>
+                </div>
+                    <div class="nombre_nivel" id="nombreNivel">Que chispudo!</div>
+                
+            </div>
+            <div class="container" style="padding:0!important;">
+                <div class="container-flex" id="juegoWrapper" style="padding-bottom:150px;margin:0!important;overflow:scroll">
+                   
+                </div>
+            </div>
+            <div class="guipil-abajo-juego">
+                
+                    <button id="salirJuegoBtn" onclick="popup.salirNivel.screen.show();"></button>
+                    <button id="saltarPreguntaBtn" onclick="juego.saltarPregunta();"></button>
+            </div>
+        </screen>
+        <screen class="screen" id="instruccionesScreen" style="display:none;">
+            <div class="guipil-arriba">
+                <div class="titulo_screen" >INSTRUCCIONES</div>
+            </div>
+            <div class="container" style="padding-bottom:100px!important;">
+            	
+                <div class="container-flex" style="overflow:scroll">
+                    <div class="flecha-arriba"></div>
+                    <div class="flecha-abajo"></div>
+                    <div id='instrucciones-logo'>
+                	</div>
+                    <div class="texto-instrucciones">
+                    1. ¡Apuráte pue!!! y regístrate para poder empezar a echar punta o bien ingresá más paja por medio del botón de entrar con Facebook. 
+					</div>
+					<div class="texto-instrucciones">
+					2. ¡Ni que fuera tu cumpleaños! para que de una podás jugar todos los niveles! vas a tener que rifarte el físico y pasarlos uno a uno.
+					</div>
+					<div class="texto-instrucciones">
+					3. Lee despacio las preguntas y seleccioná la que creas es la correcta, pero si no te la sabes…no seas pajero y usá el botón de SALTAR hasta un máximo de 3 veces por cada nivel.
+					</div>
+					<div class="texto-instrucciones">
+					4. ¡Brincos dieras! si fuera así de fácil solo con un par de respuestas buenas y ya pasaste….pero Nel, si no tenés 7 buenas….ya la ca…
+					</div>
+					<div class="texto-instrucciones">
+					5. Y aunque te pongas ¡Trompudo, Mascado y Brincón! si perdés las 5 vidas que te da el juego…..vas a tener que hacerle ganas y aguantarte 1 minuto para volver a jugar.
+					</div>
+					<div class="texto-instrucciones">
+					6. Si por Engasado….se te va la onda y no le pones coco al tiempo de cada nivel y se te acaba antes, ¡Orale, gracias por participar! y mejor te vas a traer tortillas “los 3 tiempos”.
+					</div>
+					<div class="texto-instrucciones">
+					7. Para que toda la Mara se entere de que “Te las llevas de muy Salsa” compartí en tus redes sociales la pantalla que sale cuando ganas el nivel. 
+					</div>
+					<div class="texto-instrucciones" style="padding-bottom:20px;">
+					8. ¡Aguas! con estar jugando cuando vas manejando tu carro o cuando vas subido en la Camio porque ¡NI COLOR! que vas jugando el juego de todos los Chapines:  CHAPINOMETRO
+                	</div>
+                </div>
+            </div>
+            <div>
+            	<button id="salirInstruccionesBtn" onclick="$('#instruccionesScreen').hide()"></button>
+            	<div class="guipil-abajo">
+           	    </div>
+            </div>
+            
+        </screen>
+        <screen class="screen" id="terminosCondicionesScreen" style="display:none;">
+            <div class="guipil-arriba">
+                <div class="titulo_screen" >TÉRMINOS Y CONDICIONES</div>
+            </div>
+            <div class="container" style="padding-bottom:100px!important;">
+            	
+                <div class="container-flex" style="overflow:scroll">
+                    <div class="flecha-arriba"></div>
+                    <div class="flecha-abajo"></div>
+                    <div id='instrucciones-logo'>
+                	</div>
+                    <div class="texto-instrucciones">
+                    La presente Política de Privacidad establece los términos en que Chapinómetro usa
+                    y protege la información que es proporcionada por sus usuarios al momento de 
+                    utilizar su aplicación móvil. Esta compañía está comprometida con la seguridad
+                    de los datos de sus usuarios. Cuando le pedimos llenar los campos de información
+                    personal con la cual usted puede ser identificado, lo hacemos asegurando que sólo
+                    se empleará de acuerdo con los términos de este documento. Sin embargo esta Política
+                    de Privacidad puede cambiar con el tiempo o ser actualizada por lo que recomendamos
+                    y enfatizamos revisar continuamente esta página para asegurarse que está de acuerdo
+                    con dichos cambios.
+                    </div>
+                    <div class="texto-instrucciones">
+                    INFORMACIÓN QUE ES RECOGIDA <br>
+                    Nuestra aplicación móvil podrá recoger información personal por ejemplo: Nombre,
+                    información de contacto como su dirección de correo electrónico e información
+                    demográfica. Así mismo cuando sea necesario podrá ser requerida información 
+                    específica para procesar algún pedido o realizar una entrega o facturación.
+                    </div>
+                    <div class="texto-instrucciones">
+                    USO DE LA INFORMACIÓN RECOGIDA <br>
+                    Nuestra aplicación móvil emplea la información con el fin de proporcionar el mejor
+                    servicio posible, particularmente para mantener un registro de usuarios, de pedidos
+                    en caso que aplique, y mejorar nuestros productos y servicios. Es posible que sean enviados
+                    correos electrónicos periódicamente a través de nuestro sitio con ofertas
+                    especiales, nuevos productos y otra información publicitaria que consideremos
+                    relevante para usted o que pueda brindarle algún beneficio. Estos correos
+                    electrónicos serán enviados a la dirección que usted proporcione.
+                    </div>
+                    <div style="color: #23527c;margin: 0;text-align: center;font-weight: bold;">
+                    Chapinómetro &reg; v1.01.01 / Hecho en Guatemala
+                    </div>
+                    <div style="padding-bottom:40px;color: #23527c;margin: 0;text-align: center;font-weight: bold;">
+                    Creado por Quito Sama / Dr. Carlitos / Dbuk. Desarrollado por Rodrigo Kestler
+                    </div>
+                </div>
+            </div>
+            <div>
+            	<button id="salirInstruccionesBtn" onclick="$('#terminosCondicionesScreen').hide()"></button>
+            	<div class="guipil-abajo">
+                
+            </div>
+            </div>
+            
+        </screen>
+        <screen class="popup nivel3" id="salirNivelPopup" style="display:none;">
+            
+            
+                    <div id="salirNivelImg" style="position:relative;">
+                        <div class="div-botones-modal">
+                            <table class="table-botones-modal">
+                                <tr style="width:100%">
+                                    <td style="width:50%">
+                                        <button style="width: 80%;
+    margin: 13px auto;padding:6px 0px!important;" class="btn btn-lg btn-primary btn-block bg-celeste" onclick="(function(e) { e.preventDefault(); e.stopPropagation(); juego.salirJuego(); })(event);">SALIR</button>
+                                    </td>
+                                    <td style="width:50%;"> 
+                                        <button style="width: 80%;
+    margin: 13px auto;padding:6px 0!important;" onclick="(function(e) { e.preventDefault(); e.stopPropagation();popup.salirNivel.screen.hide(); })(event);"class="btn btn-lg btn-primary btn-block bg-celeste">CANCELAR</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                
+            
+        </screen>
+        <screen class="popup nivel3" id="noPasasteNivel" style="display:none;">
+            
+            
+                    <div id="noPasasteNivelImg" style="position:relative;">
+                    	<button class="cerrar-modal" onclick="$('#noPasasteNivel').hide();"></button>
+                        <div class='div-botones-modal'>
+                        <!--  
+                            <table class="table-botones-modal">
+                                <tr style="width:100%">
+                                    <td style="width:50%">
+                                        <button style="width: 80%;
+    margin: 13px auto;padding:6px 16px!important;" class="btn btn-lg btn-primary btn-block bg-celeste" onclick="(function(e) { e.preventDefault(); e.stopPropagation(); })(event);">REPETIR</button>
+                                    </td>
+                                    
+                                </tr>
+                            </table>-->
+                        </div>
+                    </div>
+                
+            
+        </screen>
+        <screen class="popup nivel3" id="pasasteNivel" style="display:none;">
+            
+                    <div id="pasasteNivelImg" style="position:relative;">
+                    	<button class="cerrar-modal" onclick="$('#pasasteNivel').hide();"></button>
+                        <div class="div-botones-modal">
+                        
+                            <table class="table-botones-modal">
+                                <tr style="width:100%">
+                                    <td style="width:50%">
+                                        <button style="width: 80%;
+    margin: 13px auto;padding:6px 0px!important;" class="btn btn-lg btn-primary btn-block bg-celeste" onclick="(function(e) { e.preventDefault(); e.stopPropagation(); $('#pasasteNivel').hide(); })(event);">OK</button>
+                                    </td>
+                                    <td style="width:50%;"> 
+                                        <button id="socialSharingBtn" data-link="http://104.207.144.122/proyectos/chapinometro/wp-content/uploads/2017/08/que-pilas.png" style="width: 80%;
+    margin: 13px auto;padding:6px 0px!important;" onclick="(function(e) { e.preventDefault(); e.stopPropagation(); app.socialSharing();})(event);cortina.show();" data-share="1" class="btn btn-lg btn-primary btn-block bg-celeste">COMPARTIR</button>
+                   
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                
+            
+        </screen>
+  
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="myModalHeader"></h4>
+      </div>
+      <div class="modal-body" id="myModalBody">
+      </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+    <!--  
+    <button onclick="app.backButton();" style="z-index:1000;position:fixed;bottom:60px;right:20px;width:50px;height:30px;color:white;background-color:black;" id="backbutton"><</button>
+    -->
+    <div id="fb-root"></div>
+
+        <script>var ifmovil=true;</script>
+
+        <script type="text/javascript" src="cordova.js"></script>
+
+        <script type="text/javascript" src="js/jQuery.js"></script>
+        
+        <script type="text/javascript" src="js/jQueryUI.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/parsley.js"></script>
+        
+        
+        <script type="text/javascript" src="js/slick.min.js"></script>
+        <script type="text/javascript" src="js/jquery.countdown.min.js"></script>
+        <script type="text/javascript" src="js/jquery.timer.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+       
+    </body>
+</html>
