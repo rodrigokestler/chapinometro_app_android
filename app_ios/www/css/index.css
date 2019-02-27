@@ -179,7 +179,7 @@ screen, subscreen{
     width:100%;
     height:100%;
     position:fixed;
-    top:0;
+    top:0px;
     left:0;
     background-color:white;
     
@@ -216,6 +216,7 @@ input,select{
     overflow-y:scroll;
     padding-bottom:30px;
     background-color:transparent;
+    -webkit-overflow-scrolling: touch;
 }
 .container2{
     margin-top:50px!important;
@@ -609,6 +610,7 @@ input:checked + .slider:before {
     background-image: url(../img/iconos/juego-tiempo.png);
     height: 130px;
     width: 130px;
+    z-index:9;
 }
 .invisibleBtn{
     background-color:transparent;
@@ -751,4 +753,57 @@ input:checked + .slider:before {
     border-radius:5px;
     width:100%;
     height:auto
+}
+.chapipromos{
+    background-image: url("../img/chapipromos.png");
+    display:block;
+    background-size:contain;
+    background-position:center;
+    background-repeat:no-repeat;
+    margin: 20px auto;
+    width: 70vw;
+    max-width:700px;
+    height:50px;
+}
+.chapiniveles{
+    background-image: url("../img/chapiniveles.png");
+    display:block;
+    background-size:contain;
+    background-position:center;
+    background-repeat:no-repeat;
+    margin: 20px auto;
+    width: 70vw;
+    max-width:700px;
+    height:50px;
+}
+.splashDestacado{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 55;
+    display:none;
+}
+.splashDestacado img{
+    width:100%;
+    height:100%;
+    background-color:white;
+}
+.comenzarJuegoBtn{
+    width: 80%;
+    margin: 13px auto;padding:6px 0!important;
+    
+    
+}
+.comenzarJuegoBtnContainer{
+    position:absolute;
+    bottom:30px;
+    left:0;
+    width:100%;
+    height:50px;
+}
+#nivelesDestacados{
+    overflow:hidden;
+}
 }

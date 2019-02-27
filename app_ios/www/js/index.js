@@ -22,8 +22,19 @@ var user = {
 nombre: '',
 vidas: 5,
 sonidos:true,
-getVidas: function(tipo='resume'){
-    
+getUUID: function(){
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                                                          var r = (d + Math.random()*16)%16 | 0;
+                                                          d = Math.floor(d/16);
+                                                          return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+                                                          });
+    return uuid;
+},
+getVidas: function(tipo){
+    console.log('tipo get vidas '+tipo);
+    tipo = typeof tipo !== 'undefined' ?  tipo : 'resume';
+    if(user.correo == '' || user.password == '' || user.correo == null || user.password == null){return false;}
     var data = {
     user_email: user.correo,
     user_pass: user.password,
@@ -32,6 +43,13 @@ getVidas: function(tipo='resume'){
         
     };
     console.log(JSON.stringify(data));
+    console.log(tipo);
+    console.log(user.vidas);
+    if(tipo=='reset'){
+        user.vidas = 5;
+    }
+    console.log(user.vidas);
+    niveles.vidas.html(user.vidas);
     $.ajax({
            url:app.url_ajax,
            dataType: 'json',
@@ -45,11 +63,8 @@ getVidas: function(tipo='resume'){
            success: function(a){
            console.log(JSON.stringify(a));
            if(a.msj_error === undefined && a.success==='1'){
-           user.vidas = a.vidas;
-           if(tipo=='reset'){
-           user.vidas = 5;
-           }
-           niveles.vidas.html(user.vidas);
+           //user.vidas = a.vidas;
+           
            
            }else{
            
@@ -63,21 +78,14 @@ getVidas: function(tipo='resume'){
            
            });
 },
-setPushes:function(){
-    pushNotification.register(
-                              user.successHandler,
-                              user.errorHandler,
-                              {
-                              "senderID":app.pushID,
-                              "ecb":"user.onNotification"
-                              });
-    
-},
+
 successHandler:function(e){
-    
+    console.log('success push handler');
+    console.log(e);
 },
 errorHandler:function(e){
-    
+    console.log('error push handler');
+    console.log(e);
 },
 onNotification:function(e){
     console.log(e.regid);
@@ -114,9 +122,9 @@ onNotification:function(e){
     initialize : function(){
         user.recordarPassword = 'true';
         console.log(user.recordarPassword);
-        user.correo = window.localStorage.getItem('correo');
+        user.correo = window.localStorage.getItem('correo-ios');
         console.log(user.correo);
-        user.password = window.localStorage.getItem('password');
+        user.password = window.localStorage.getItem('password-ios');
         console.log(user.password);
         
         if(window.localStorage.getItem('sonidos') == 'false'){
@@ -127,32 +135,42 @@ onNotification:function(e){
             app.sonidosBtn.addClass('sonido_on');
         }
         
-        if(user.recordarPassword != '' &&  user.correo != '' && user.password != '' && user.recordarPassword ==='true'){
+        if(user.recordarPassword != '' &&  user.correo != '' && user.password != '' && user.recordarPassword ==='true' && user.correo !==null && user.password !==null){
             
-            if(user.correo !==null && user.password !==null && (user.correo !== user.password && (isNaN(user.correo) && isNaN(user.password)))){
-                //loginScreen.loginPantalla.hide();
-                
+            
                 console.log('entro login normal');
-                $('#loginEmail').val(user.correo);
-                $('#loginPassword').val(user.password);
-                loginScreen.loginButton.click();
+                var formData = {
+                user_email: user.correo,
+                user_pass: user.password,
+                action:     'login'
+                };
+                loginScreen.login(formData);
                 
-            }else if(user.correo === user.password && !isNaN(user.correo) && !isNaN(user.password) && user.correo!=null && user.password!=null){
-                fb.login();
-            }
+        }else{
+            console.log('entro else user initialize');
+            var uuid = user.getUUID();
+            var formData =
+            {
+            user_email: uuid,
+            user_pass1: uuid,
+            user_name:  uuid,
+            action:     'register_user'
+            };
+            registerScreen.register(formData);
+            console.log(uuid);
         }
         
     },
     setProps : function(correo, password){
         user.correo = correo;
         user.password = password;
-        window.localStorage.setItem('correo',correo);
-        window.localStorage.setItem('password',password);
+        window.localStorage.setItem('correo-ios',correo);
+        window.localStorage.setItem('password-ios',password);
         window.localStorage.setItem('recordarPassword','true');
     },
 logout: function(){
-    window.localStorage.setItem('correo','');
-    window.localStorage.setItem('password','');
+    window.localStorage.setItem('correo-ios','');
+    window.localStorage.setItem('password-ios','');
     app.history = [];
     menuScreen.menu.hide();
     loginScreen.loginPantalla.show();
@@ -238,6 +256,7 @@ clean: function(){
                // contentType: false,
                error: function(a,b,c){
                console.log('error '+JSON.stringify(a)+JSON.stringify(b));
+               niveles.wrapper.html('<div style="text-align:center;">Ocurrio un error. Por favor intenta de nuevo </div><button onclick="user.initialize();" class="btn btn-lg btn-primary btn-block bg-azul2">RECARGAR</button>');
                },
                success: function(a){
                console.log(JSON.stringify(a));
@@ -246,30 +265,37 @@ clean: function(){
                user.setProps(formDataRegister.user_email,formDataRegister.user_pass1);
                user.vidas = 5;
                niveles.vidas.html(user.vidas);
-               registerScreen.registerPantalla.hide('slide',{direction:'left'},'fast');
                niveles.getNiveles();
-               registerScreen.clean();
-               loginScreen.loginPantalla.hide();
-               clevertap.profile.push({
-                                      "Site": {
-                                      "Email": ""+formDataRegister.user_email, // User's name
-                                      "mail": ""+formDataRegister.user_email, // User's name
-                                      "Identity": a.ID,
-                                      "platform": ""+device.platform,
-                                      "model": ""+device.model
-                                      }
-                                      });
-               clevertap.event.push("Register");
+               if(ifmovil){
                
+               CleverTap.profileSet({
+                                    "Email": ""+formDataRegister.user_email, // User's name
+                                    "mail": ""+formDataRegister.user_email, // User's name
+                                    "Identity": a.ID,
+                                    "platform": ""+device.platform,
+                                    "model": ""+device.model
+                                    });
+               /*clevertap.profile.push({
+                "Site": {
+                "Email": ""+formDataRegister.user_email, // User's name
+                "mail": ""+formDataRegister.user_email, // User's name
+                "Identity": a.ID,
+                "platform": ""+device.platform,
+                "model": ""+device.model
+                }
+                });*/
+               //clevertap.event.push("Register");
+               CleverTap.recordEventWithName("Register");
+               }
                }else{
-               myModal.open('Error',a.msj_error);
+               niveles.wrapper.html('<div style="text-align:center;">Ocurrio un error. Por favor intenta de nuevo </div><button onclick="user.initialize();" class="btn btn-lg btn-primary btn-block bg-azul2">RECARGAR</button>');
                
                
                }
                },
                complete: function(){
-               registerScreen.registerButton.prop('disabled',false);
-               registerScreen.registerButton.html('ENTRAR');
+               //registerScreen.registerButton.prop('disabled',false);
+               //registerScreen.registerButton.html('ENTRAR');
                
                }
                
@@ -300,7 +326,7 @@ loadScreenEvents: function(){
                                        console.log('login submit');
                                        if(loginScreen.success){
                                        loginScreen.success = false;
-                                       formData = loginScreen.loginForm.getFormData();
+                                       var formData = loginScreen.loginForm.getFormData();
                                        formData.action = 'login';
                                        loginScreen.login(formData);
                                        }
@@ -309,7 +335,7 @@ loadScreenEvents: function(){
 },
     login : function(formData){
         console.log('login');
-        formData.user_email += '@chapinometro.com';
+        //formData.user_email += '@chapinometro.com';
         console.log(JSON.stringify(formData));
         
         $.ajax({
@@ -318,13 +344,9 @@ loadScreenEvents: function(){
                data: formData,
                type: 'post',
                timeout: 15000,
-               //crossDomain: true,
-               //cache: false,
-               //processData : false,
-               //contentType: false,
                error: function(a,b,c){
                console.log('error '+JSON.stringify(a)+JSON.stringify(b));
-               myModal.open('Error','Ha ocurrido un error, por favor intenta de nuevo');
+               niveles.wrapper.html('<div style="text-align:center;">Ocurrio un error. Por favor intenta de nuevo </div><button onclick="user.initialize();" class="btn btn-lg btn-primary btn-block bg-azul2">RECARGAR</button>');
                },
                success: function(a){
                console.log(a);
@@ -335,29 +357,28 @@ loadScreenEvents: function(){
                if(isNaN(user.vidas)){user.vidas=5;}
                niveles.vidas.html(user.vidas);
                niveles.getNiveles();
-               loginScreen.loginPantalla.hide('slide',{direction:'left'},'fast');
+               //loginScreen.loginPantalla.hide('slide',{direction:'left'},'fast');
                if(ifmovil){
-               clevertap.profile.push({
-                                      "Site": {
-                                      "Email": ""+formData.user_email, // User's name
-                                      "mail": ""+formData.user_email,
-                                      "Identity":a.ID,
-                                      "platform": ""+device.platform,
-                                      "model": ""+device.model
-                                      }
-                                      });
+               
+               
+               CleverTap.profileSet({
+                                    "Email": ""+formDataRegister.user_email, // User's name
+                                    "mail": ""+formDataRegister.user_email, // User's name
+                                    "Identity": a.ID,
+                                    "platform": ""+device.platform,
+                                    "model": ""+device.model
+                                    });
+               CleverTap.recordEventWithName("Login");
                }
                
-               clevertap.event.push("Login");
-               //user.setPushes();
-               
                }else{
-               myModal.open('Error',a.msj_error);
+               //myModal.open('Error',a.msj_error);
+               niveles.wrapper.html('<div style="text-align:center;">Ocurrio un error. Por favor intenta de nuevo </div><button onclick="user.initialize();" class="btn btn-lg btn-primary btn-block bg-azul2">RECARGAR</button>');
                }
                },
                complete: function(){
-               loginScreen.loginButton.html('ENTRAR');
-               loginScreen.loginButton.prop('disabled',false);
+               //loginScreen.loginButton.html('ENTRAR');
+               //loginScreen.loginButton.prop('disabled',false);
                
                }
                
@@ -389,313 +410,419 @@ hide: function(){
 }
 };
 var juego = {
-nombreNivel: $('#nombreNivel'),
-screen: $("#juego"),
-wrapper: $("#juegoWrapper"),
-timer: null,
-contador: $("#segundos"),
-tiempo_restante: 120,
-preguntas: null,
-respuestasBuenas:0,
-respuestasContestadas:0,
-respuestasSaltadas:0,
-index: 0,
-nivelJugando: null,
-numeroNivel: null,
-vidas: $('#texto_vidas_niveles2'),
-imageCount: 0,
-imagesLoaded: 0,
-images: [],
-sonidoInicio: null,
-sonidoTiempo: null,
-sonidoGanar: null,
-sonidoPerder: null,
+    splash: null,
+    startBtn: null,
+    nombreNivel: $('#nombreNivel'),
+    screen: $("#juego"),
+    wrapper: $("#juegoWrapper"),
+    timer: null,//$.timer(this.timerCallback, 1000, false),
+    contador: $("#segundos"),
+    tiempo_restante: 120,
+    preguntas: null,
+    respuestasBuenas:0,
+    respuestasContestadas:0,
+    respuestasSaltadas:0,
+    index: 0,
+    nivelJugando: null,
+    numeroNivel: null,
+    vidas: $('#texto_vidas_niveles2'),
+    imageCount: 0,
+    imagesLoaded: 0,
+    images: [],
+    sonidoInicio: null,
+    sonidoTiempo: null,
+    sonidoGanar: null,
+    sonidoPerder: null,
     
-reset: function(){
-    juego.respuestasBuenas = 0;
-    juego.respuestasContestadas = 0;
-    juego.respuestasSaltadas = 0;
-    juego.preguntas = null;
-    juego.timer = null;
-    juego.tiempo_restante = 120;
-    juego.wrapper.html('');
-    juego.vidas.html(user.vidas);
-    juego.index = 0;
-    juego.imageCount = 0;
-    juego.imagesLoaded = 0;
-    juego.images = [];
-    //juego.nivelJugando = null;
-},
-send_resultado: function(respuestas_buenas,preguntas_jugadas){
-    console.log('nivel '+juego.nivelJugando);
-    clevertap.event.push("Jugo nivel", {
-                         "Respuestas buenas" :respuestas_buenas,
-                         "Nivel"			 :juego.nombreNivel.html(),
-                         "Preguntas jugadas" :preguntas_jugadas,
-                         "Preguntas saltadas":juego.respuestasSaltadas
-                         });
-    $.ajax({
-           url:app.url_ajax,
-           dataType: 'html',
-           data: {
-           id_nivel: juego.nivelJugando,
-           user_email: user.correo,
-           user_pass: user.password,
-           action: 'send_resultado',
-           respuestas: respuestas_buenas
-           },
-           type: 'post',
-           timeout: 15000,
-           // processData : false,
-           // contentType: false,
-           error: function(a,b,c){
-           console.log('error '+JSON.stringify(a)+JSON.stringify(b));
-           },
-           beforeSend: function(){
-           console.log('mandando resultados '+respuestas_buenas);
-           },
-           success: function(a){
-           console.log(a);
-           },
-           complete: function(){
-           niveles.getNiveles();
-           }
-           });
-    
-},
-send_vidas:function(vidas){
-    $.ajax({
-           url:app.url_ajax,
-           dataType: 'html',
-           data: {
-           user_email: user.correo,
-           user_pass: user.password,
-           action: 'send_vidas',
-           vidas: vidas
-           },
-           type: 'post',
-           timeout: 15000,
-           // processData : false,
-           // contentType: false,
-           error: function(a,b,c){
-           console.log('error '+JSON.stringify(a)+JSON.stringify(b));
-           },
-           beforeSend: function(){
-           console.log('mandando vidas '+vidas);
-           },
-           success: function(a){
-           console.log(a);
-           },
-           complete: function(){
-           
-           }
-           });
-},
-get_preguntas: function(id_nivel){
-    var castigo = parseInt(window.localStorage.getItem('castigo'));
-    console.log('castigo '+castigo);
-    console.log(' '+!isNaN(castigo));
-    if(!isNaN(castigo) && Date.now()<castigo){
-        console.log('entro castigo');
-        myModal.open('Qué neeecio','Tenés que esperar 9 minutos para volver a jugar!');
-        return true;
-    }else if(!isNaN(castigo) && Date.now()>castigo){
-        console.log('quitar castigo');
-        window.localStorage.setItem('castigo','');
-        user.getVidas('reset');
-        //user.vidas = 5;
-        //juego.vidas.html(user.vidas);
-    }
-    juego.nivelJugando = id_nivel;
-    if(ifmovil){
-        //return Math.floor(Math.random() * (max - min + 1)) + min;
-        var sonido_random_id = Math.floor((Math.random() * 11) );
-        var mp3URL = getMediaURL(app.media[sonido_random_id]);
-        juego.sonido = new Media(mp3URL,null,function(){
-                                 console.log('error media');
-                                 });
-    }
-    
-    
-    console.log('sonido random '+sonido_random_id);
-    $.ajax({
-           url:app.url_ajax,
-           dataType: 'html',
-           data: {
-           id_nivel: id_nivel,
-           user_email: user.correo,
-           user_pass: user.password,
-           action: 'get_preguntas'
-           },
-           type: 'post',
-           timeout: 15000,
-           // processData : false,
-           // contentType: false,
-           error: function(a,b,c){
-           console.log('error '+JSON.stringify(a)+JSON.stringify(b));
-           cortina.hide();
-           myModal.open('Oops','Parece que ha ocurrido un error al cargar las preguntas. Por favor intenta de nuevo');
-           },
-           beforeSend: function(){
-           juego.reset();
-           cortina.show();
-           },
-           success: function(a){
-           
-           juego.wrapper.html(a);
-           juego.preguntas = $('.pregunta',juego.wrapper);
-           console.log(juego.preguntas);
-           $(juego.preguntas[0]).show();
-           //juego.comenzarJuego(sonido);
-           
-           
-           },
-           complete: function(a){
-           
-           
-           }
-           
-           });
-},
-comenzarJuego: function(sonido){
-    
-    cortina.hide();
-    juego.screen.show();
-    if(ifmovil && user.sonidos){
-        try{
-            juego.sonido.play();
-        }catch(e){
-            console.log('error media play');
+    reset: function(){
+        juego.splash = null;
+        juego.respuestasBuenas = 0;
+        juego.respuestasContestadas = 0;
+        juego.respuestasSaltadas = 0;
+        juego.preguntas = null;
+        //juego.timer = null;
+        //juego.timer.set({ time: 1000, autostart: false });
+        juego.tiempo_restante = 120;
+        juego.wrapper.html('');
+        juego.vidas.html(user.vidas);
+        juego.index = 0;
+        juego.imageCount = 0;
+        juego.imagesLoaded = 0;
+        juego.images = [];
+        //juego.nivelJugando = null;
+    },
+    send_resultado: function(respuestas_buenas,preguntas_jugadas){
+        console.log('nivel '+juego.nivelJugando);
+        /*
+         clevertap.event.push("Jugo nivel", {
+         "Respuestas buenas" :respuestas_buenas,
+         "Nivel"              :juego.nombreNivel.html(),
+         "Preguntas jugadas" :preguntas_jugadas,
+         "Preguntas saltadas":juego.respuestasSaltadas
+         });*/
+        if(ifmovil){
+            CleverTap.recordEventWithNameAndProps("Jugo nivel", {
+                                                  "Respuestas buenas" :respuestas_buenas,
+                                                  "Nivel"              :juego.nombreNivel.html(),
+                                                  "Preguntas jugadas" :preguntas_jugadas,
+                                                  "Preguntas saltadas":juego.respuestasSaltadas
+                                                  });
         }
-    }
-    
-    $('.respuestaTexto').click(function(){
-                               var dis = $(this);
-                               juego.respuestasContestadas = juego.respuestasContestadas +1;
-                               var esta = $(this).data('opcion');
-                               var correcta = $(this).data('correcta');
-                               if(esta==correcta){
-                               juego.respuestasBuenas = juego.respuestasBuenas +1;
-                               dis.addClass("breath");
-                               dis.addClass("correcto");
-                               }else{
-                               dis.addClass("shake");
-                               dis.addClass("incorrecto");
-                               navigator.vibrate(400);
-                               
-                               user.vidas = user.vidas - 1;
-                               if(user.vidas<=0){
-                               //Sin vidas, terminar nivel
-                               user.vidas = 0;
-                               var minutos = Date.now() + app.espera;
-                               window.localStorage.setItem('castigo',minutos);
-                               var noti = Date.now() + app.espera;
-                               if(ifmovil){
-                               cordova.plugins.notification.local.schedule({
-                                                                           id: 1,
-                                                                           title: "¡Ya pasó el susto, muchá!",
-                                                                           message: "Relax y seguí jugando con El Chapi pues",
-                                                                           firstAt: noti,
-                                                                           icon: "../img/iconos/logo-letra-azul.png",
-                                                                           });
-                               }
-                               niveles.checkTimer();
-                               console.log(minutos);
-                               juego.limpiarTerminar(sonido);
-                               return false;
-                               }
-                               juego.vidas.html(user.vidas);
-                               }
-                               
-                               setTimeout(function(){
-                                          console.log('index ocultando '+juego.index);
-                                          $(juego.preguntas[juego.index]).hide();
-                                          juego.index = juego.index + 1;
-                                          //if(juego.index>9){
-                                          if(juego.index> (juego.preguntas.length - 1)){
-                                          juego.limpiarTerminar(sonido);
-                                          }else{
-                                          console.log('index mostrando '+juego.index);
-                                          $(juego.preguntas[juego.index]).show();
+        
+        $.ajax({
+               url:app.url_ajax,
+               dataType: 'html',
+               data: {
+               id_nivel  : juego.nivelJugando,
+               user_email: user.correo,
+               user_pass : user.password,
+               action    : 'send_resultado',
+               respuestas: respuestas_buenas
+               },
+               type: 'post',
+               timeout: 15000,
+               // processData : false,
+               // contentType: false,
+               error: function(a,b,c){
+               console.log('error '+JSON.stringify(a)+JSON.stringify(b));
+               },
+               beforeSend: function(){
+               console.log('mandando resultados '+respuestas_buenas);
+               },
+               success: function(a){
+               console.log(a);
+               },
+               complete: function(){
+               niveles.getNiveles();
+               }
+               });
+        
+    },
+    send_vidas:function(vidas){
+        $.ajax({
+               url:app.url_ajax,
+               dataType: 'html',
+               data: {
+               user_email: user.correo,
+               user_pass: user.password,
+               action: 'send_vidas',
+               vidas: vidas
+               },
+               type: 'post',
+               timeout: 15000,
+               // processData : false,
+               // contentType: false,
+               error: function(a,b,c){
+               console.log('error '+JSON.stringify(a)+JSON.stringify(b));
+               },
+               beforeSend: function(){
+               console.log('mandando vidas '+vidas);
+               },
+               success: function(a){
+               console.log(a);
+               },
+               complete: function(){
+               
+               }
+               });
+    },
+    get_preguntas_ajax: null,
+    get_preguntas: function( id_nivel, splash ){
+        var castigo = parseInt(window.localStorage.getItem('castigo'));
+        console.log('castigo '+castigo);
+        console.log(' '+!isNaN(castigo));
+        if(!isNaN(castigo) && Date.now()<castigo){
+            console.log('entro castigo');
+            myModal.open('Qué neeecio','Tenés que esperar 1 minuto para volver a jugar!');
+            return true;
+        }else if(!isNaN(castigo) && Date.now()>castigo){
+            console.log('quitar castigo');
+            window.localStorage.setItem('castigo','');
+            user.getVidas('reset');
+            user.vidas = 5;
+            niveles.vidas.html(user.vidas);
+            
+        }
+        var action_ajax = 'get_preguntas';
+        if( splash != undefined ){
+            juego.splash = splash;
+            action_ajax = "get_preguntas_destacadas";
+        }
+        console.log(action_ajax);
+        juego.nivelJugando = id_nivel;
+        if(ifmovil){
+            //return Math.floor(Math.random() * (max - min + 1)) + min;
+            var sonido_random_id = Math.floor((Math.random() * 11) );
+            var mp3URL = getMediaURL(app.media[sonido_random_id]);
+            juego.sonido = new Media(mp3URL,null,function(){
+                                     console.log('error media');
+                                     });
+            console.log('sonido random '+sonido_random_id);
+        }
+        
+        
+        if( juego.get_preguntas_ajax != null ){
+            return false;
+        }
+        juego.get_preguntas_ajax = $.ajax({
+                                          url:app.url_ajax,
+                                          dataType: 'html',
+                                          data: {
+                                          id_nivel:   id_nivel,
+                                          user_email: user.correo,
+                                          user_pass:  user.password,
+                                          action:     action_ajax
+                                          },
+                                          type: 'post',
+                                          timeout: 15000,
+                                          // processData : false,
+                                          // contentType: false,
+                                          error: function(a,b,c){
+                                          console.log('error '+JSON.stringify(a)+JSON.stringify(b));
+                                          cortina.hide();
+                                          myModal.open('Oops','Parece que ha ocurrido un error al cargar las preguntas. Por favor intenta de nuevo');
+                                          },
+                                          beforeSend: function(){
+                                          juego.reset();
+                                          cortina.show();
+                                          },
+                                          success: function(a){
+                                          
+                                          juego.wrapper.html(a);
+                                          juego.preguntas = $('.pregunta',juego.wrapper);
+                                          console.log(juego.preguntas);
+                                          $(juego.preguntas[0]).show();
+                                          //juego.comenzarJuego(sonido);
+                                          
+                                          
+                                          },
+                                          complete: function(a){
+                                          juego.get_preguntas_ajax = null;
+                                          
                                           }
-                                          },1000);
-                               
-                               
-                               });
-    juego.contador.html(juego.tiempo_restante);
-    juego.timer = setInterval(function(){
-                              
-                              juego.tiempo_restante--;
-                              juego.contador.html(juego.tiempo_restante);
-                              juego.contador.addClass('breath_1');
-                              setTimeout(function(){
-                                         juego.contador.removeClass('breath_1');
-                                         },300);
-                              if(juego.tiempo_restante==20){
-                              if(ifmovil && user.sonidos){
-                              try{
-                              juego.sonidoTiempo.play();
-                              }catch(e){
-                              console.log('error media play');
-                              }
-                              }
-                              }
-                              if(juego.tiempo_restante==0){
-                              navigator.vibrate(1000);
-                              juego.limpiarTerminar(sonido);
-                              }
-                              },1000);
-},
-limpiarTerminar: function(sonido){
-    try{
-        sonido.release();
-    }catch(e){
+                                          
+                                          });
+    },
+    comenzarJuego: function(sonido){
         
-    }
-    
-    clearInterval(juego.timer);
-    juego.timer = null;
-    juego.send_resultado(juego.respuestasBuenas, juego.respuestasContestadas);
-    juego.send_vidas(user.vidas);
-    niveles.vidas.html(user.vidas);
-    if(juego.respuestasBuenas>=7){
-        $('#pasasteNivel').show();
+        if( juego.splash != null ){
+            juego.splash.hide();
+        }
+        cortina.hide();
+        juego.screen.show();
         if(ifmovil && user.sonidos){
             try{
-                juego.sonidoGanar.play();
+                juego.sonido.play();
             }catch(e){
                 console.log('error media play');
             }
         }
         
-    }else{
-        $('#noPasasteNivel').show();
-        if(ifmovil && user.sonidos){
-            try{
-                juego.sonidoPerder.play();
-            }catch(e){
-                console.log('error media play');
+        $('.respuestaTexto').click(function(){
+                                   var dis = $(this);
+                                   juego.respuestasContestadas = juego.respuestasContestadas +1;
+                                   var esta = $(this).data('opcion');
+                                   var correcta = $(this).data('correcta');
+                                   if(esta==correcta){
+                                   juego.respuestasBuenas = juego.respuestasBuenas +1;
+                                   dis.addClass("breath");
+                                   dis.addClass("correcto");
+                                   }else{
+                                   dis.addClass("shake");
+                                   dis.addClass("incorrecto");
+                                   navigator.vibrate(400);
+                                   
+                                   user.vidas = user.vidas - 1;
+                                   if(user.vidas<=0){
+                                   //Sin vidas, terminar nivel
+                                   user.vidas = 0;
+                                   var minutos = Date.now() + app.espera;
+                                   window.localStorage.setItem('castigo',minutos);
+                                   var noti = Date.now() + app.espera;
+                                   if(ifmovil){
+                                   cordova.plugins.notification.local.schedule({
+                                                                               id: 1,
+                                                                               title: "¡Ya pasó el susto, muchá!",
+                                                                               message: "Relax y seguí jugando con El Chapi pues",
+                                                                               firstAt: noti,
+                                                                               icon: "../img/iconos/logo-letra-azul.png",
+                                                                               });
+                                   }
+                                   niveles.checkTimer();
+                                   console.log(minutos);
+                                   juego.limpiarTerminar(sonido);
+                                   return false;
+                                   }
+                                   juego.vidas.html(user.vidas);
+                                   }
+                                   
+                                   setTimeout(function(){
+                                              console.log('index ocultando '+juego.index);
+                                              $(juego.preguntas[juego.index]).hide();
+                                              juego.index = juego.index + 1;
+                                              //if(juego.index>9){
+                                              if(juego.index> (juego.preguntas.length - 1)){
+                                              juego.limpiarTerminar(sonido);
+                                              }else{
+                                              console.log('index mostrando '+juego.index);
+                                              $(juego.preguntas[juego.index]).show();
+                                              }
+                                              },1000);
+                                   
+                                   
+                                   });
+        juego.contador.html(juego.tiempo_restante);
+        if(juego.timer == null){
+            juego.timer = $.timer(juego.timerCallback, 1000, true);
+        }
+        
+        juego.timer.play();
+        
+        /*
+         juego.timer = setInterval(function(){
+         
+         juego.tiempo_restante--;
+         juego.contador.html(juego.tiempo_restante);
+         juego.contador.addClass('breath_1');
+         setTimeout(function(){
+         juego.contador.removeClass('breath_1');
+         },300);
+         if(juego.tiempo_restante==20){
+         if(ifmovil && user.sonidos){
+         try{
+         juego.sonidoTiempo.play();
+         }catch(e){
+         console.log('error media play');
+         }
+         }
+         }
+         if(juego.tiempo_restante==0){
+         navigator.vibrate(1000);
+         juego.limpiarTerminar(sonido);
+         }
+         },1000);*/
+    },
+    timerCallback: function(){
+        console.log('timer callback entro');
+        juego.tiempo_restante--;
+        juego.contador.html(juego.tiempo_restante);
+        juego.contador.addClass('breath_1');
+        setTimeout(function(){
+                   juego.contador.removeClass('breath_1');
+                   },300);
+        if(juego.tiempo_restante==20){
+            if(ifmovil && user.sonidos){
+                try{
+                    juego.sonidoTiempo.play();
+                }catch(e){
+                    console.log('error media play');
+                }
             }
         }
-    }
-    
-    juego.screen.hide();
-},
-saltarPregunta: function(){
-    juego.respuestasContestadas = juego.respuestasContestadas +1;
-    juego.respuestasSaltadas = juego.respuestasSaltadas + 1;
-    $(juego.preguntas[juego.index]).hide();
-    juego.index = juego.index + 1;
-    //if(juego.index>9){
-    if(juego.index > juego.preguntas.length || juego.respuestasSaltadas ==3){
+        if(juego.tiempo_restante<=0){
+            navigator.vibrate(1000);
+            juego.limpiarTerminar(sonido);
+        }
+    },
+    limpiarTerminar: function(sonido){
+        $("#niveles_container").css("overflow","scroll");
+        try{
+            sonido.release();
+        }catch(e){
+            
+        }
+        console.log('juego timer');
+        console.log(juego.timer);
+        //clearInterval(juego.timer);
+        //juego.timer = null;
+        juego.timer.stop();
+        juego.send_resultado(juego.respuestasBuenas, juego.respuestasContestadas);
+        juego.send_vidas(user.vidas);
+        niveles.vidas.html(user.vidas);
+        if(juego.respuestasBuenas>=7){
+            $('#pasasteNivel').show();
+            if(ifmovil && user.sonidos){
+                try{
+                    juego.sonidoGanar.play();
+                }catch(e){
+                    console.log('error media play');
+                }
+            }
+            
+        }else{
+            $('#noPasasteNivel').show();
+            if(ifmovil && user.sonidos){
+                try{
+                    juego.sonidoPerder.play();
+                }catch(e){
+                    console.log('error media play');
+                }
+            }
+        }
+        
+        juego.screen.hide();
+    },
+    saltarPregunta: function(){
+        juego.respuestasContestadas = juego.respuestasContestadas +1;
+        juego.respuestasSaltadas = juego.respuestasSaltadas + 1;
+        $(juego.preguntas[juego.index]).hide();
+        juego.index = juego.index + 1;
+        //if(juego.index>9){
+        if(juego.index > juego.preguntas.length || juego.respuestasSaltadas ==3){
+            juego.limpiarTerminar();
+        }else{
+            $(juego.preguntas[juego.index]).show();
+        }
+    },
+    salirJuego: function(){
+        popup.salirNivel.screen.hide();
         juego.limpiarTerminar();
-    }else{
-        $(juego.preguntas[juego.index]).show();
     }
-},
-salirJuego: function(){
-    popup.salirNivel.screen.hide();
-    juego.limpiarTerminar();
+};
+var nivelesDestacados={
+section: $('#nivelesDestacados'),
+wrapper: $('#nivelesDestacadosWrapper'),
+images: [],
+get: function(){
+    
+    $.ajax({
+           url:app.url_ajax,
+           dataType: 'html',
+           data: {
+           action: 'get_niveles_destacados_con_splash',
+           user_email: user.correo,
+           user_pass: user.password,
+           
+           },
+           type: 'post',
+           timeout: 15000,
+           error: function(a,b,c){
+           console.log('error '+JSON.stringify(a)+JSON.stringify(b));
+           nivelesDestacados.wrapper.html('<div style="text-align:center;">Ocurrio un error. Por favor intenta de nuevo </div><button onclick="nivelesDestacados.get();" class="btn btn-lg btn-primary btn-block bg-azul2">RECARGAR</button>');
+           
+           },
+           beforeSend: function(){
+           nivelesDestacados.wrapper.html(app.loader_block);
+           },
+           success: function(a){
+           nivelesDestacados.wrapper.html(a);
+           $('.nivelBtnDestacado').click(function(){
+                                         $("#niveles_container").css("overflow","visible");
+                                         console.log('nivelBtn clicked');
+                                         var bloqueado = $(this).hasClass('nivel_bloqueado');
+                                         if(bloqueado!=true){
+                                         var id_nivel = $(this).data('nivelid');
+                                         var splash = $(this).next();
+                                         splash.show();
+                                         juego.get_preguntas(id_nivel, splash);
+                                         
+                                         }
+                                         });
+           
+           },
+           complete: function(){
+           }
+           });
 }
 };
 var niveles={
@@ -711,26 +838,19 @@ checkTimer: function(){
                                         $(this).html(event.strftime('%M minutos : %S segundos'));
                                         }).on('finish.countdown',function(){
                                               console.log('finish timer');
-                                              //checkTimer();
+                                              niveles.checkTimer();
                                               user.getVidas('reset');
                                               });
     }else{
-        /*
-         if(!isNaN(tiempo) && Date.now()>tiempo){
-         console.log('quitar castigo');
-         window.localStorage.setItem('castigo','');
-         console.log('reset vidas checktimer');
-         user.getVidas('reset');
-        	}else{
-         console.log('get vidas checktimer');
-         user.getVidas();
-        	}*/
+        console.log('entro else check timer');
+        
         $('#container-timer').hide();
     }
     
 },
 getNiveles: function(){
     niveles.checkTimer();
+    nivelesDestacados.get();
     $.ajax({
            url:app.url_ajax,
            dataType: 'html',
@@ -814,7 +934,7 @@ login: function(){
                                          fb.button.html(fb.buttonHtml);
                                          fb.button.prop('disabled',false);
                                          myModal.open('Error','Ha ocurrido un error al conectarse a Facebook. Por favor intenta de nuevo');
-                                         console.log(""+JSON.stringify(error))
+                                         console.log(""+JSON.stringify(error));
                                          if(debug){
                                          navigator.notification.alert("error login status "+JSON.stringify(response));
                                          }
@@ -900,16 +1020,16 @@ wp_login: function(id,user_name,user_email){
            niveles.vidas.html(user.vidas);
            niveles.getNiveles();
            loginScreen.loginPantalla.hide('slide',{direction:'left'},'fast');
-           //user.setPushes();
-           clevertap.profile.push({
-                                  "Site": {
-                                  "Email": ""+user_email, // User's name
-                                  "mail": ""+user_email, // User's name,
-                                  "Identity": a.ID,
-                                  "platform": ""+device.platform,
-                                  "model": ""+device.model
-                                  }
-                                  });
+           
+           if(ifmovil){
+           CleverTap.profileSet({
+                                "Email": ""+formDataRegister.user_email, // User's name
+                                "mail": ""+formDataRegister.user_email, // User's name
+                                "Identity": a.ID,
+                                "platform": ""+device.platform,
+                                "model": ""+device.model
+                                });
+           }
            }else{
            myModal.open('Error',a.msj_error);
            }
@@ -924,7 +1044,26 @@ wp_login: function(id,user_name,user_email){
            });
 }
 };
-
+var clevertap = {
+    
+onCleverTapProfileSync: function(){
+    
+},
+onCleverTapProfileDidInitialize: function(){
+},
+onCleverTapInAppNotificationDismissed: function(e){
+    //navigator.notification.alert(JSON.stringify(e));
+},
+onDeepLink: function(e) {
+    console.log(e.deeplink);
+},
+onPushNotification: function(e){
+    //e.notification.actionId (id de boton que presiono)
+    //e.notification.keyName
+    console.log(JSON.stringify(e.notification));
+    //navigator.notification.alert(JSON.stringify(e));
+}
+};
 var app = {
     // Application Constructor
 sonidosBtn: $('#sonidos'),
@@ -934,7 +1073,7 @@ link: 'http://rumbafest.clx.mobi/descarga',
 footer_select_html: '<div style="position:absolute;top:0;"><div class="circulo"><i style="color:white!important;font-size:10px;" class="fa fa-circle" aria-hidden="true"></i></div></div>',
 media: ["sounds/papel-botella-ropa.m4a","sounds/pase-mi-reina.m4a",  "sounds/se-arregla-zapatos.m4a",
         "sounds/aceite-tiburon.m4a",    "sounds/arreglo-zapatos.m4a","sounds/botella-papel-ropa-2.m4a",
-        "sounds/chuchito-tostada.m4a",  "sounds/explicacion.m4a",    "sounds/gomma-rollo.m4a",
+        "sounds/chuchito-tostada.m4a",  "sounds/explicacion.m4a",    "sounds/goma-rollo.m4a",
         "sounds/guate.m4a",             "sounds/la-papa.m4a"
         ],
     footer : {
@@ -946,8 +1085,8 @@ media: ["sounds/papel-botella-ropa.m4a","sounds/pase-mi-reina.m4a",  "sounds/se-
     },
 current_screen: '',
 current_footer: null,//app.footer.cartelera,
-    url : 'http://104.207.144.122/proyectos/chapinometro/',
-    url_ajax : 'http://104.207.144.122/proyectos/chapinometro/wp-admin/admin-ajax.php',
+    url : 'http://144.202.67.109/',
+    url_ajax : 'http://144.202.67.109//wp-admin/admin-ajax.php',
 loader_block: '<div style="display:block;margin:0 auto;width:40px;"><i class="fa fa-cog fa-spin" style="font-size:30px;font-color:black;"></i></div>',
     loader : '<div style="display:inline-block;margin:0 auto;width:40px;"><i class="fa fa-cog fa-spin" style="font-size:30px;font-color:black;"></i></div>',
     loader_mini : '<i class="fa fa-cog fa-spin" style="font-size:11px;font-color:black;"></i>',
@@ -980,6 +1119,12 @@ initialize: function() {
         console.log('es movil');
         document.addEventListener("deviceready", this.onDeviceReady, false);
         document.addEventListener("resume", app.onResume, false);
+        document.addEventListener('onCleverTapProfileSync', clevertap.onCleverTapProfileSync, false); // optional: to be notified of CleverTap user profile synchronization updates
+        document.addEventListener('onCleverTapProfileDidInitialize', clevertap.onCleverTapProfileDidInitialize, false); // optional, to be notified when the CleverTap user profile is initialized
+        document.addEventListener('onCleverTapInAppNotificationDismissed', clevertap.onCleverTapInAppNotificationDismissed, false); // optional, to be receive a callback with custom in-app notification click data
+        document.addEventListener('onDeepLink', clevertap.onDeepLink, false); // optional, register to receive deep links.
+        document.addEventListener('onPushNotification', clevertap.onPushNotification, false); // optional, register to receive push notification payloads.
+
     }else{
         console.log('no es movil');
         app.onDeviceReady();
@@ -1003,7 +1148,7 @@ loadEvents: function(){
     
     if(ifmovil){
         
-        var sonidoGanar = getMediaURL('sounds/marimba-win.wav');
+        var sonidoGanar = getMediaURL('sounds/marimba-winner.wav');
         juego.sonidoGanar = new Media(sonidoGanar,function(){
                                       //navigator.notification.alert("Exito");
                                       },function(){
@@ -1018,8 +1163,10 @@ loadEvents: function(){
                                        console.log('error media');
                                        });
         var sonidoPerder = getMediaURL('sounds/marimba-loser.wav');
-        juego.sonidoPerder = new Media(sonidoPerder,null,function(){
+        juego.sonidoPerder = new Media(sonidoPerder,null,
+                                       function(){
                                        console.log('error media');
+                                       //navigator.notificaton.alert("sonido perder failure");
                                        });
         
     }
@@ -1109,96 +1256,26 @@ backButton: function(e){
     
 },
 onDeviceReady: function() {
-    if(ifmovil){
-        pushNotification = window.plugins.pushNotification;
-    }
+    
+        if(ifmovil){
+            //pushNotification = window.plugins.pushNotification;
+            CleverTap.registerPush();
+            CleverTap.setDebugLevel(1);
+            CleverTap.enablePersonalization();
+        }
+    
     
     
     console.log('device ready');
     document.addEventListener("backbutton", app.backButton, false);
-    loginScreen.loadScreenEvents();
-    registerScreen.loadScreenEvents();
+    //loginScreen.loadScreenEvents();
+    //registerScreen.loadScreenEvents();
     app.loadEvents();
     user.initialize();
     
     
 },
-showScreen: function(screenToShow,indexFooter,pop){
-    
-    if(app.current_screen!=screenToShow){
-        app.current_screen.hide();
-        app.current_footer.prev().remove();
-        if(app.current_screen == perfilScreen.perfilPantalla && pop!='pop'){
-            console.log('push 1');
-            app.history.push(1);
-        }else if(app.current_screen == carteleraScreen.carteleraPantalla && pop!='pop'){
-            console.log('push 2');
-            app.history.push(2);
-        }else if(app.current_screen == promosScreen.promosPantalla && pop!='pop'){
-            console.log('push 3');
-            app.history.push(3);
-        }else if(app.current_screen == checkinScreen.checkinPantalla && pop!='pop'){
-            console.log('push 4');
-            app.history.push(4);
-        }
-        
-    }
-    
-    switch(indexFooter){
-        case 0:
-            if(app.current_screen!=screenToShow){
-                app.current_screen = perfilScreen.perfilPantalla;
-                app.current_screen.show();
-                app.current_footer = app.footer.perfil;
-                app.current_footer.parent().prepend(app.footer_select_html);
-            }
-            
-            perfilScreen.get();
-            break;
-        case 1:
-            if(app.current_screen==screenToShow){
-                carteleraScreen.eventosSubscreen.get();
-            }else{
-                app.current_screen = carteleraScreen.carteleraPantalla;
-                app.current_screen.show();
-                
-                app.current_footer = app.footer.cartelera;
-                app.current_footer.parent().prepend(app.footer_select_html);
-            }
-            
-            break;
-        case 2:
-            if(app.current_screen!=screenToShow){
-                app.current_screen = promosScreen.promosPantalla;
-                app.current_screen.show();
-                app.current_footer = app.footer.promos;
-                app.current_footer.parent().prepend(app.footer_select_html);
-            }
-            promosScreen.get();
-            
-            break
-        case 3:
-            if(app.current_screen!=screenToShow){
-                app.current_screen = musicaScreen.musicaPantalla;
-                app.current_screen.show();
-                app.current_footer = app.footer.musica;
-                app.current_footer.parent().prepend(app.footer_select_html);
-            }
-            
-            break
-        case 4:
-            if(app.current_screen!=screenToShow){
-                app.current_screen = checkinScreen.checkinPantalla;
-                app.current_screen.show();
-                app.current_footer = app.footer.checkin;
-                app.current_footer.parent().prepend(app.footer_select_html);
-                
-            }
-            checkinScreen.get();
-            break;
-    }
-    app.current_screen = screenToShow;
-},
+
 };
 
 $.fn.scrollTo = function( target, options, callback ){
@@ -1217,14 +1294,14 @@ $.fn.scrollTo = function( target, options, callback ){
                                         if (typeof callback == 'function') { callback.call(this); }
                                         });
                      });
-}
+};
 $.fn.cleanForm = function(){
     $(':input',this)
     .not(':button, :submit, :reset, :hidden')
     .val('')
     .removeAttr('checked')
     .removeAttr('selected');	
-}
+};
 $.fn.getFormData = function(){
     var thisForm = this;
     var data = {};
@@ -1276,7 +1353,7 @@ $.fn.getFormData = function(){
                                       });
     console.log(JSON.stringify(data));
     return data;
-}
+};
 function getMediaURL(s) {
     if(device.platform.toLowerCase() === "android") return "/android_asset/www/" + s;
     return s;
