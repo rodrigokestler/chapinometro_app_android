@@ -677,30 +677,7 @@ var juego = {
         }
         
         juego.timer.play();
-        
-        /*
-         juego.timer = setInterval(function(){
-         
-         juego.tiempo_restante--;
-         juego.contador.html(juego.tiempo_restante);
-         juego.contador.addClass('breath_1');
-         setTimeout(function(){
-         juego.contador.removeClass('breath_1');
-         },300);
-         if(juego.tiempo_restante==20){
-         if(ifmovil && user.sonidos){
-         try{
-         juego.sonidoTiempo.play();
-         }catch(e){
-         console.log('error media play');
-         }
-         }
-         }
-         if(juego.tiempo_restante==0){
-         navigator.vibrate(1000);
-         juego.limpiarTerminar(sonido);
-         }
-         },1000);*/
+
     },
     timerCallback: function(){
         console.log('timer callback entro');
@@ -720,11 +697,14 @@ var juego = {
             }
         }
         if(juego.tiempo_restante<=0){
+            console.log("Tiempo terminado");
+            console.log(juego.sonido);
+            juego.limpiarTerminar(juego.sonido);
             navigator.vibrate(1000);
-            juego.limpiarTerminar(sonido);
         }
     },
     limpiarTerminar: function(sonido){
+        console.log("Limpiar y terminar");
         $("#niveles_container").css("overflow","scroll");
         try{
             sonido.release();
@@ -733,8 +713,6 @@ var juego = {
         }
         console.log('juego timer');
         console.log(juego.timer);
-        //clearInterval(juego.timer);
-        //juego.timer = null;
         juego.timer.stop();
         juego.send_resultado(juego.respuestasBuenas, juego.respuestasContestadas);
         juego.send_vidas(user.vidas);
