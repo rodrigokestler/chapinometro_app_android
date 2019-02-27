@@ -1,0 +1,809 @@
+
+/*
+ Guia de Colores
+ azul oscuro: #262261; (footer)
+ amarillo: #faaf40;
+ rosado-naranja: #e54d42;
+ rojo: #be1e2d;
+ morado oscuro:#712b8c;
+ rosado: #b62271;
+ */
+/*
+ Indexes de Pantallas
+ Login - 25
+ Register - 26
+ menu principal - 21
+ proponer lugar - 21
+ proponer evento - 21
+ single evento - 11
+ screen, subscreen - 10
+ footer - 20
+ */
+input[type="radio"] {
+    -webkit-appearance: checkbox;
+    -moz-appearance: checkbox;
+    -ms-appearance: checkbox;     /* not currently supported */
+}
+button, input:focus, button:focus {
+    outline: none!important;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+textarea {
+    resize: none;
+}
+@-webkit-keyframes shake_anim {
+    0% { -webkit-transform: translate(-2px,0);} /*translate3d(-2px,0,0); }*/
+    50% { -webkit-transform: translate(-2px,0);} /*translate3d(2px,0,0); }*/
+    100% { -webkit-transform: translate(0,0);} /*translate3d(0,0,0); }*/
+}
+.shake{
+    -webkit-animation-name: shake_anim;
+    -webkit-animation-duration: 100ms;
+    -webkit-animation-iteration-count: 3;
+    -webkit-animation-timing-function: linear;
+}
+@-webkit-keyframes breath_anim {
+    50% { -webkit-transform: scale(1.05); }
+    100% { -webkit-transform: scale(1); }
+}
+.breath{
+    -webkit-animation-name: breath_anim;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-iteration-count: 3;
+    -webkit-animation-timing-function: linear;
+}
+.breath_1{
+    -webkit-animation-name: breath_anim_1;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-iteration-count: 3;
+    -webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes breath_anim_1 {
+    25% { border: none; }
+    50% { -webkit-transform: scale(1.1); }
+    75% { border: none; }
+    100% { -webkit-transform: scale(1); }
+}
+
+.correcto{
+    background-color:#9DDD00;
+    border-radius:15px;
+}
+.incorrecto{
+    background-color:#DA0E0B;
+    border-radius:15px;
+}
+.nivel1{
+    z-index:11;
+}
+.nivel2{
+    z-index:12;
+}
+.nivel3{
+    z-index:21;
+}
+.nivel4{
+    z-index:24;
+}
+
+input:focus{
+    outline:none;
+}
+.bg-verdeclaro{
+    background-color:#82ffa1;
+}
+.bg-verdeoscuro{
+    background-color:#13dd73;
+}
+.bg-celeste{
+    background-color:#4ecbbb;
+}
+.bg-azul{
+    background-color:#1a54a1;
+}
+.bg-azul2{
+    background-colo:#0081c1;
+}
+.bg-azuloscuro{
+    background-color:#40365b;
+}
+.font-naranja{
+    color:#e54d42!important;
+}
+.font-negro{
+    color:black!important;
+}
+.font-blanco{
+    color:white!important;
+}
+.font-gris{
+    color:#555!important;
+}
+.font-morado{
+    color:#712b8c!important;
+    
+}
+.font-morado2{
+    color:#7139ad;
+}
+.font-azul{
+    color:#262261!important;
+}
+ul.parsley-errors-list {
+    display:none !important;
+}
+ul.parsley-errors-list li {
+    display:none !important;
+}
+.parsley-error{
+    border-color:red;
+}
+.col-xs-6{
+    margin:0;
+    padding:0;
+}
+.col-xs-12{
+    margin:0;
+    padding:0;
+}
+
+.subcontainer{
+    overflow-y:scroll;
+    position:relative;
+    height:100%;
+    background-color:white;
+}
+.wrapper{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    overflow-y: scroll;
+    z-index: 100;
+    bottom: 0;
+    height: 100%;
+    padding-bottom:160px; /*140px en eventos*/
+    overflow-x:hidden;
+}
+screen, subscreen{
+    z-index:10;
+    width:100%;
+    height:100%;
+    position:fixed;
+    top:0px;
+    left:0;
+    background-color:white;
+    
+}
+
+
+
+ul{
+    margin:0;
+    padding:0;
+}
+
+button{
+    background-color:inherit;
+    border:none!important;
+    margin: 10px 0;
+    outline: none;
+}
+input,select{
+    background-color:inherit;
+    margin: 15px 0!important;
+    position:inherit!important;
+}
+.container-flex{
+    display:flex;
+    flex-direction:column;
+    justify-content:start-flex;
+    margin: auto 5%;
+    height:auto;
+}
+.container{
+    margin-top:50px!important;
+    height:100%;
+    overflow-y:scroll;
+    padding-bottom:30px;
+    background-color:transparent;
+    -webkit-overflow-scrolling: touch;
+}
+.container2{
+    margin-top:50px!important;
+    width:100%;
+    height:100%;
+    background-color:white;
+}
+#login{
+    z-index:999!important;
+    background-color:white;
+    font-size:18px;
+    color:gray;
+}
+#register{
+    z-index:1000;
+}
+
+#icono-facebook{
+    height:23px;
+    width:35px;
+    background-image:url("../img/icon-fb.png");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+    display:inline-block;
+}
+
+button.menu{
+    font-size:20px;
+    color:white;
+    position:absolute;
+    top:0;
+    right:10px;
+}
+button.cerrar{
+    position:absolute;
+    top:0;
+    right:0;
+    color:white;
+    font-weight:bold;
+    width:20px;
+    height:20px;
+    margin:0 10px!important;
+    background-size:contain;
+    background-repeat:no-repeat;
+    font-size:20px;
+}
+button.regresar{
+    position:absolute;
+    top:0;
+    left:0;
+    color:white;
+    font-weight:bold;
+    width:20px;
+    height:20px;
+    margin:0 10px!important;
+    font-size:20px;
+}
+.text-header{
+    width:200px;
+    margin:5px auto;
+    text-align:center;
+    color:white;
+    font-size:18px;
+}
+.text-header button{
+    float:left;
+}
+.sub-header{
+    height:40px;
+    background-color:white;
+}
+.sub-header ul li{
+    float:left;
+    list-style-type:none;
+    font-size:15px;
+    height:40px;
+    margin: 0 5px;
+}
+.sub-header ul{
+    padding:0;
+}
+
+ul.header-nav li{
+    float:left;
+    list-style-type:none;
+    color:white;
+    height:30px;
+    line-height:30px;
+    font-size:20px;
+    
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 45px;
+    height: 20px;
+    margin: 10px 0 0 5px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #262261;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #262261;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(22px);
+    -ms-transform: translateX(22px);
+    transform: translateX(22px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+#niveles{
+    background-image: url("../img/castillo-san-felipe.png");
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+.guipil-arriba{
+    background-image:url("../img/iconos/header.png");
+    width:100%;
+    height:50px;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    position:absolute;
+    top:0;
+    left:0;
+}
+.guipil-abajo{
+    background-image:url("../img/iconos/header.png");
+    width:100%;
+    height:50px;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    position:absolute;
+    bottom:0;
+    left:0;
+    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+    transform: rotate(180deg);
+}
+.guipil-abajo-juego{
+    background-image:url("../img/iconos/header.png");
+    width:100%;
+    height:50px;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    position:absolute;
+    bottom:0;
+    left:0;
+}
+#vidas_niveles{
+    color:white;
+    font-weight:bold;
+    height:30px;
+    width:75px;
+    background-image:url("../img/iconos/vidas.png");
+    background-size:contain;
+    background-position:center;
+    position:absolute;
+    top:10px;
+    right:40px;
+    background-repeat:no-repeat;
+}
+#vidas_niveles2{
+    color:white;
+    font-weight:bold;
+    height:30px;
+    width:75px;
+    background-image:url("../img/iconos/vidas.png");
+    background-size:contain;
+    background-position:center;
+    position:absolute;
+    top:10px;
+    right:10px;
+    background-repeat:no-repeat;
+}
+.texto_vidas{
+    position: absolute;
+    top: 1px;
+    right: 21px;
+    font-size: 19px;
+}
+.quetzal-completo{
+    height: 120px;
+    width: 120px;
+    position: absolute;
+    bottom: 5px;
+    right: -20px;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-image: url(../img/finales/quetzal-completo.png);
+    background-size: contain;
+    margin: 0;
+    padding: 0;
+    z-index:10;
+}
+#menuBtn{
+    height: 85px;
+    width: 85px;
+    position: absolute;
+    bottom: 0px;
+    left: 5px;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-image: url(../img/iconos/boton-menu2.png);
+    background-size: contain;
+    margin: 0;
+    padding: 0;
+    z-index:10;
+}
+#salirJuegoBtn, #salirInstruccionesBtn{
+    height: 85px;
+    width: 85px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-position: -20px 22px;
+    background-repeat: no-repeat;
+    background-image: url(../img/iconos/juego-salir.png);
+    background-size: 100%;
+    margin: 0;
+    padding: 0;
+    z-index:9;
+}
+#saltarPreguntaBtn{
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(../img/finales/quetzal-saltar-pregunta.png);
+    background-size: contain;
+    margin: 0;
+    padding: 0;
+}
+#menuLeft{
+    height: 100%;
+    width: 80%;
+    display: inline-block;
+    float: left;
+    background-color: rgba(255, 255, 255, 0.86);
+    overflow-y: scroll;
+}
+#musica{
+    margin:0;
+    padding:0;
+    width:80px;
+    height:80px;
+    background-image:url("../img/iconos/menu-sonidos.png");
+    background-position:center;
+    background-size:contain;
+    background-repeat:no-repeat;
+}
+#sonidos{
+    margin:0;
+    padding:0;
+    width:80px;
+    height:80px;
+    background-position:center;
+    background-size:contain;
+    background-repeat:no-repeat;
+}
+#instrucciones{
+    margin:0;
+    padding:0;
+    width:200px;
+    height:80px;
+    background-image:url("../img/iconos/menu-instrucciones.png");
+    background-position:center;
+    background-size:contain;
+    background-repeat:no-repeat;
+}
+#franjaverdeclaro{
+    position:absolute;
+    top:0;
+    right:20%;
+    height:100%;
+    width:5px
+}
+#franjaverdeoscuro{
+    position:absolute;
+    top:0;
+    right:21.5%;
+    height:100%;
+    width:3.5px
+}
+.texto-instrucciones{
+    color:#23527c;
+    text-align:justify;
+    margin: 20px 0;
+}
+.texto_niveles{
+    position: absolute;
+    bottom: 8px;
+    right: 21px;
+}
+.nivel_juego{
+    position:relative;
+    width:90px;
+    height:110px;
+    background-size:contain;
+    background-repeat:no-repeat;
+    margin:0;
+    padding:0;
+    /*background-image:url("../img/iconos/nivel-que-chispudo.png");*/
+}
+.nivel_bloqueado{
+    position:relative;
+    width:80px;
+    height:100px;
+    background-size:contain;
+    background-repeat:no-repeat;
+    margin:0;
+    padding:0;
+    background-image:url("../img/iconos/nivel-bloqueado.png")!important;
+}
+.nombre_nivel{
+    position: absolute;
+    top: 7px;
+    left: 95px;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    text-shadow: -1px 0 #4ecbbb, 0 1px #4ecbbb, 1px 0 #4ecbbb, 0 -1px #4ecbbb;
+    
+}
+.titulo_screen{
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    text-shadow: -1px 0 #4ecbbb, 0 1px #4ecbbb, 1px 0 #4ecbbb, 0 -1px #4ecbbb;
+    text-align:center;
+}
+#tiempo_juego{
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    background-position: -32px -28px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    background-image: url(../img/iconos/juego-tiempo.png);
+    height: 130px;
+    width: 130px;
+    z-index:9;
+}
+.invisibleBtn{
+    background-color:transparent;
+    border:none;
+}
+.popup{
+    width:100%;
+    height:100%;
+    background-color:rgba(6, 6, 6, 0.65);
+}
+#salirNivelImg{
+    width: 97vw;
+    height: 58vh;
+    background-position: center;
+    background-size: 330px auto;
+    background-repeat: no-repeat;
+    background-image: url(../img/finales/que-ondas.png);
+    margin: 40% auto;
+    max-height: 330px;
+    max-width: 330px;
+}
+#pasasteNivelImg{
+    width: 97vw;
+    height: 58vh;
+    background-position: center;
+    background-size: 330px auto;
+    background-repeat: no-repeat;
+    background-image: url(../img/finales/que-buzo.png);
+    margin: 40% auto;
+    max-height: 330px;
+    max-width: 330px;
+}
+#noPasasteNivelImg{
+    width: 97vw;
+    height: 58vh;
+    background-position: center;
+    background-size: 330px auto;
+    background-repeat: no-repeat;
+    background-image: url(../img/finales/por-chambon.png);
+    margin: 40% auto;
+    max-height: 330px;
+    max-width: 330px;
+}
+.div-botones-modal{
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+}
+.table-botones-modal{
+    width: 92%;
+    margin: 0 auto;
+    max-width: 300px;
+}
+.preguntaSection{
+    overflow:hidden;
+    width: 100%;
+    height: auto;
+    background-color: #4ecbbb;
+    color: white;
+    font-weight: bold;
+    padding:10px 0;
+}
+.preguntaTexto{
+    width: 80%;
+    margin: 60px auto 0;
+    text-align: center;
+    font-size:26px;
+}
+.respuestaTexto{
+    width: 80%;
+    text-align: center;
+    margin: 25px auto;
+    color: #3a013a;
+    display:block;
+}
+.preguntas{
+    position:absolute;
+    top:0;
+    left:0;
+}
+.cerrar-modal{
+    position:absolute;
+    top:0;
+    right:10px;
+    background-image:url(../img/iconos/cerrar.png);
+    background-position:center;
+    height:60px;
+    width:60px;
+    background-size:contain;
+    background-repeat:no-repeat;
+}
+.flecha-arriba{
+    width:25px;
+    height:25px;
+    position:absolute;
+    top:40vh;
+    left:10px;
+    background-image:url(../img/iconos/juego-flecha1.png);
+    background-repeat:no-repeat;
+    background-size:contain;
+    background-position:center;
+}
+.flecha-abajo{
+    width:25px;
+    height:25px;
+    position:absolute;
+    bottom:30vh;
+    left:10px;
+    background-image:url(../img/iconos/juego-flecha2.png);
+    background-repeat:no-repeat;
+    background-size:contain;
+    background-position:center;
+}
+.sonido_on{
+    margin:0;
+    padding:0;
+    width:80px;
+    height:80px;
+    background-image:url("../img/iconos/sonido-on.png");
+    background-position:center;
+    background-size:contain;
+    background-repeat:no-repeat;
+}
+.sonido_off{
+    background-image:url("../img/iconos/sonido-off.png");
+}
+.timer{
+    text-align:center;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    text-shadow: -1px 0 #4ecbbb, 0 1px #4ecbbb, 1px 0 #4ecbbb, 0 -1px #4ecbbb;
+}
+.preguntaImagen{
+    width: 50vw;
+    margin: 0 auto;
+}
+.preguntaImagen img{
+    border-radius:5px;
+    width:100%;
+    height:auto
+}
+.chapipromos{
+    background-image: url("../img/chapipromos.png");
+    display:block;
+    background-size:contain;
+    background-position:center;
+    background-repeat:no-repeat;
+    margin: 20px auto;
+    width: 70vw;
+    max-width:700px;
+    height:50px;
+}
+.chapiniveles{
+    background-image: url("../img/chapiniveles.png");
+    display:block;
+    background-size:contain;
+    background-position:center;
+    background-repeat:no-repeat;
+    margin: 20px auto;
+    width: 70vw;
+    max-width:700px;
+    height:50px;
+}
+.splashDestacado{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 55;
+    display:none;
+}
+.splashDestacado img{
+    width:100%;
+    height:100%;
+    background-color:white;
+}
+.comenzarJuegoBtn{
+    width: 80%;
+    margin: 13px auto;padding:6px 0!important;
+    
+    
+}
+.comenzarJuegoBtnContainer{
+    position:absolute;
+    bottom:30px;
+    left:0;
+    width:100%;
+    height:50px;
+}
+#nivelesDestacados{
+    overflow:hidden;
+}
+}

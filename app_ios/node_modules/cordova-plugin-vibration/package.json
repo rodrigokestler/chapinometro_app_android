@@ -1,0 +1,106 @@
+{
+  "name": "cordova-plugin-vibration",
+  "version": "2.1.5",
+  "description": "Cordova Vibration Plugin",
+  "types": "./types/index.d.ts",
+  "cordova": {
+    "id": "cordova-plugin-vibration",
+    "platforms": [
+      "firefoxos",
+      "wp7",
+      "wp8",
+      "android",
+      "amazon-fireos",
+      "ubuntu",
+      "ios",
+      "blackberry10",
+      "tizen"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apache/cordova-plugin-vibration.git"
+  },
+  "keywords": [
+    "cordova",
+    "vibration",
+    "ecosystem:cordova",
+    "cordova-firefoxos",
+    "cordova-wp7",
+    "cordova-wp8",
+    "cordova-android",
+    "cordova-amazon-fireos",
+    "cordova-ubuntu",
+    "cordova-ios",
+    "cordova-blackberry10",
+    "cordova-tizen"
+  ],
+  "scripts": {
+    "test": "npm run jshint",
+    "jshint": "jshint www && jshint src && jshint tests"
+  },
+  "author": {
+    "name": "Apache Software Foundation"
+  },
+  "license": "Apache-2.0",
+  "engines": {
+    "cordovaDependencies": {
+      "3.0.0": {
+        "cordova": ">100"
+      }
+    }
+  },
+  "devDependencies": {
+    "jshint": "^2.6.0"
+  },
+  "bugs": {
+    "url": "https://github.com/apache/cordova-plugin-vibration/issues"
+  },
+  "homepage": "https://github.com/apache/cordova-plugin-vibration#readme",
+  "_id": "cordova-plugin-vibration@2.1.5",
+  "_shasum": "485353a2fdfce71b0e4809c3f55771f8fa3e0623",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-vibration/-/cordova-plugin-vibration-2.1.5.tgz",
+  "_from": "cordova-plugin-vibration@latest",
+  "_npmVersion": "3.10.10",
+  "_nodeVersion": "6.10.1",
+  "_npmUser": {
+    "name": "filmaj",
+    "email": "maj.fil@gmail.com"
+  },
+  "dist": {
+    "shasum": "485353a2fdfce71b0e4809c3f55771f8fa3e0623",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-vibration/-/cordova-plugin-vibration-2.1.5.tgz"
+  },
+  "maintainers": [
+    {
+      "name": "bowserj",
+      "email": "bowserj@apache.org"
+    },
+    {
+      "name": "csantanapr",
+      "email": "csantana23@gmail.com"
+    },
+    {
+      "name": "filmaj",
+      "email": "maj.fil@gmail.com"
+    },
+    {
+      "name": "purplecabbage",
+      "email": "purplecabbage@gmail.com"
+    },
+    {
+      "name": "shazron",
+      "email": "shazron@gmail.com"
+    },
+    {
+      "name": "stevegill",
+      "email": "stevengill97@gmail.com"
+    }
+  ],
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/cordova-plugin-vibration-2.1.5.tgz_1493685658179_0.5779761432204396"
+  },
+  "directories": {},
+  "readme": "ERROR: No README data found!"
+}

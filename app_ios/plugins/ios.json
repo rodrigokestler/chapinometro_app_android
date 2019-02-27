@@ -1,0 +1,67 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-console": {
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    },
+    "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    },
+    "cordova-plugin-facebook4": {
+      "APP_ID": "1915593285386091",
+      "APP_NAME": "Chapinometro",
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    },
+    "cordova-plugin-media": {
+      "MICROPHONE_USAGE_DESCRIPTION": " ",
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    },
+    "cordova-plugin-vibration": {
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    },
+    "cordova-plugin-x-socialsharing": {
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    },
+    "de.appplant.cordova.plugin.local-notification": {
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    },
+    "com.clevertap.cordova.CleverTapPlugin": {
+      "CLEVERTAP_ACCOUNT_ID": "W69-8RZ-K94Z",
+      "CLEVERTAP_TOKEN": "12b-c60",
+      "CLEVERTAP_REGION": " ",
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    },
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    },
+    "cordova-plugin-app-event": {
+      "PACKAGE_NAME": "com.chapinometro.ios"
+    }
+  }
+}

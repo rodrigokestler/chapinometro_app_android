@@ -1,0 +1,58 @@
+{
+  "name": "com.chapinometro.ios",
+  "displayName": "Chapinometro",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "clevertap-cordova": "git+https://github.com/CleverTap/clevertap-cordova.git",
+    "cordova-ios": "^4.4.0",
+    "cordova-plugin-app-event": "^1.2.1",
+    "cordova-plugin-compat": "^1.2.0",
+    "cordova-plugin-console": "^1.1.0",
+    "cordova-plugin-device": "^1.1.6",
+    "cordova-plugin-dialogs": "^1.3.3",
+    "cordova-plugin-facebook4": "^1.9.1",
+    "cordova-plugin-file": "^4.3.3",
+    "cordova-plugin-inappbrowser": "^1.7.1",
+    "cordova-plugin-local-notifications": "git+https://github.com/katzer/cordova-plugin-local-notifications.git",
+    "cordova-plugin-media": "^3.0.1",
+    "cordova-plugin-splashscreen": "^4.0.3",
+    "cordova-plugin-vibration": "^2.1.5",
+    "cordova-plugin-whitelist": "^1.3.2",
+    "cordova-plugin-x-socialsharing": "^5.2.0",
+    "de.appplant.cordova.plugin.local-notification": "https://github.com/katzer/cordova-plugin-local-notifications",
+    "es6-promise-plugin": "^4.1.0"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-facebook4": {
+        "APP_ID": "1915593285386091",
+        "APP_NAME": "Chapinometro"
+      },
+      "cordova-plugin-vibration": {},
+      "cordova-plugin-dialogs": {},
+      "cordova-plugin-console": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-media": {},
+      "cordova-plugin-inappbrowser": {},
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-x-socialsharing": {},
+      "de.appplant.cordova.plugin.local-notification": {},
+      "cordova-plugin-splashscreen": {},
+      "com.clevertap.cordova.CleverTapPlugin": {
+        "CLEVERTAP_ACCOUNT_ID": "W69-8RZ-K94Z",
+        "CLEVERTAP_TOKEN": "12b-c60",
+        "CLEVERTAP_REGION": " "
+      }
+    },
+    "platforms": [
+      "ios"
+    ]
+  }
+}
